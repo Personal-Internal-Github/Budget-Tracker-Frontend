@@ -1,0 +1,11 @@
+.TotalBudgetBalanceView{
+  display: flex;
+  justify-content: center;
+}
+
+.TotalBudgetBalance{
+  border: 1px solid black;
+  border-radius: 20rem;
+  padding: 1rem 2rem;
+  text-align: center;
+}

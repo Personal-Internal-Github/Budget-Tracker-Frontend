@@ -1,7 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 
-export default function HomePage(){
-  return(
-    <h1>This is a home page!</h1>
+import TotalBudgetBalance from "../component/TotalIncomeBudget_Component/TotalIncomeBudget";
+import AddIncomeButton from "../component/Add_Income_Button/AddIncomeButton";
+import AddExpenseButton from "../component/AddExpense_Component/AddExpenseButton";
+import IncomeList from "../component/IncomeList_Component/IncomeList";
+import ExpenseList from "../component/ExpenseList_Component/ExpenseList";
+import TotalExpense from "../component/TotalExpense_Component/TotalExpense";
+import TotalIncome from "../component/TotalIncome_Component/TotalIncome";
+
+export default function HomePage() {
+
+  return (
+    <div id='mainView'>
+      <div>
+        <TotalBudgetBalance/>
+      </div>
+
+      <div className="AddButtonComponentView">
+        <AddIncomeButton />
+        <AddExpenseButton />
+      </div>
+
+      <div className="TotalComponentView">
+        <TotalIncome />
+        <TotalExpense />
+      </div>
+
+      <IncomeList />
+      <ExpenseList />
+    </div>
   )
 }

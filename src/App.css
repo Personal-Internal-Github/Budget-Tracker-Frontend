@@ -1,4 +1,33 @@
 * {
-  margin: 0;
+  margin: 0 0.5rem;
   padding: 0;
+}
+
+#mainView {
+  margin: 1rem 0 0 0;
+}
+
+.TotalExpenseText, .TotalIncomeText{
+  font-weight: bold;
+  font-size: large;
+  text-align: center;
+  margin: 0 auto;
+}
+
+Input{
+  border: 1px solid black;
+}
+
+.TotalComponentView{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0 10rem;
+}
+
+.AddButtonComponentView{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0 10rem;
 }

@@ -1,7 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { ChakraProvider } from '@chakra-ui/react'
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import App from './App.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <App />
+    <ChakraProvider>
+        <App />
+    </ChakraProvider>
 )
