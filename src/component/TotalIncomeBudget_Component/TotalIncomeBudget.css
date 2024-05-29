@@ -1,6 +1,7 @@
 .TotalBudgetBalanceView{
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .TotalBudgetBalance{
@@ -8,4 +9,6 @@
   border-radius: 20rem;
   padding: 1rem 2rem;
   text-align: center;
+  font-weight: bold;
+  font-size: 25px;
 }

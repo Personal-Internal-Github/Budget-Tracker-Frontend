@@ -20,7 +20,7 @@ import '../../App.css';
 export default function AddExpenseButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [expenseValue, setExpenseValue] = useState(0);
-  const [expenseDescription, setExpenseDescription] = useState('');
+  const [expenseDescription, setExpenseDescription] = useState(null);
   const queryClient = useQueryClient();
 
   const {mutate, reset} = useMutation({
@@ -36,7 +36,7 @@ export default function AddExpenseButton() {
   })
 
   return (
-    <div>
+    <>
       <Button colorScheme='red' onClick={() => setIsOpen(true)}>
         Add Expense
       </Button>
@@ -60,7 +60,7 @@ export default function AddExpenseButton() {
               </InputGroup>
 
               <InputGroup>
-                <InputLeftAddon>Description</InputLeftAddon>
+                <InputLeftAddon width={152}>Description</InputLeftAddon>
                 <Input variant='outlined' type='text' onChange={(e) => setExpenseDescription(e.target.value)} value={expenseDescription} />
               </InputGroup>
               {/* <Input variant='outlined' type='text' onChange={(e) => setExpenseDescription(e.target.value)} value={expenseDescription} placeholder='Please enter your expense description' /> */}
@@ -81,6 +81,6 @@ export default function AddExpenseButton() {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </div>
+    </>
   )
 }

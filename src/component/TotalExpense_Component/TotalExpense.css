@@ -1,11 +1,10 @@
 #TotalExpense{
-  position: relative;
-  /* border: 1px solid blue; */
-  background-color: #EFDAC7;
-  /* width: 7rem; */
+  background-color: #e0781da8;
   border-radius: 0.5rem;
-  margin: 0;
-  padding: 0 1rem 1.5rem;
+  /* margin: 0; */
+  /* padding: 0 1rem 1.5rem; */
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .AddExpenseIcon{
@@ -13,4 +12,6 @@
   top: 3.25rem;
   right: 0;
   bottom: 0;
+  font-weight: bold;
+  font-size: large;
 }

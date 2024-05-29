@@ -8,7 +8,10 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   AlertDialogCloseButton,
-  Button
+  Button,
+  InputGroup,
+  InputLeftAddon,
+  Input
 } from '@chakra-ui/react';
 
 import IncomeAPI from '../../API/IncomeAPI';
@@ -18,16 +21,18 @@ export default function AddIncomeButton() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [incomeValue, setIncomeValue] = useState(0);
-  const {data, mutate, reset} = useMutation({
-    mutationFn: (incomeAmount) => IncomeAPI.addIncome(incomeAmount),
+  const [incomeDescription, setIncomeDescription] = useState(null);
+  const { data, mutate, reset } = useMutation({
+    mutationFn: ([incomeAmount, incomeDescription]) => IncomeAPI.addIncome(incomeAmount, incomeDescription),
     onSuccess: () => {
-      queryClient.invalidateQueries(['incomes', 'totalIncomes'])
+      queryClient.invalidateQueries(['incomes'])
+      queryClient.invalidateQueries(['totalIncomes'])
     }
   })
 
   return (
-    <div>
-      <Button colorScheme='red' onClick={() => setIsOpen(true)}>
+    <>
+      <Button colorScheme='blue' onClick={() => setIsOpen(true)}>
         Add Income
       </Button>
 
@@ -37,12 +42,22 @@ export default function AddIncomeButton() {
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
-            {/* <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
               Add Income
-            </AlertDialogHeader> */}
+            </AlertDialogHeader>
 
             <AlertDialogBody>
-              <input type='number' onChange={(e) => setIncomeValue(e.target.value)} value={incomeValue} placeholder='Please enter your income amount'/>
+              <InputGroup>
+                <InputLeftAddon>Income Amount</InputLeftAddon>
+                <Input type='number' onChange={(e) => setIncomeValue(e.target.value)} value={incomeValue} placeholder='Please enter your income amount' required />
+              </InputGroup>
+            </AlertDialogBody>
+
+            <AlertDialogBody>
+              <InputGroup>
+                <InputLeftAddon>Income Description</InputLeftAddon>
+                <Input type='text' onChange={(e) => setIncomeDescription(e.target.value)} value={incomeDescription} placeholder='Please enter your income amount' required />
+              </InputGroup>
             </AlertDialogBody>
 
             <AlertDialogFooter>
@@ -50,16 +65,16 @@ export default function AddIncomeButton() {
                 Cancel
               </Button>
               <Button colorScheme='blue' onClick={() => {
-                mutate(incomeValue);
+                mutate([incomeValue, incomeDescription]);
                 reset();
                 setIsOpen(false);
-                }} ml={3}>
+              }} ml={3}>
                 Add
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </div>
+    </>
   )
 }

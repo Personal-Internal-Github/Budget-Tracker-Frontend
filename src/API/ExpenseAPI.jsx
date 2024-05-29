@@ -14,7 +14,7 @@ const ExpenseAPI = {
   async getExpenseByMonth(){
     const response = await axios.get('http://127.0.0.1:3000/expense/getExpenseByMonth');
 
-    const totalExpenseByCurrentMonth = await response.data.map(data => data.expense_amount).reduce((prevValue, curValue) => prevValue + curValue, 0)
+    const totalExpenseByCurrentMonth = await response?.data?.map(data => data.expense_amount)?.reduce((prevValue, curValue) => prevValue + curValue, 0)
     // console.log(totalExpenseByCurrentMonth);
     return totalExpenseByCurrentMonth;
   },

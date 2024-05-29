@@ -3,6 +3,7 @@ import moment from 'moment';
 import { useQueryClient, useMutation, useQuery } from '@tanstack/react-query';
 import { Button, Center } from '@chakra-ui/react';
 import Table from 'react-bootstrap/Table';
+import { NumericFormat } from 'react-number-format';
 // import {
 //   TableContainer,
 //   Table,
@@ -15,84 +16,86 @@ import Table from 'react-bootstrap/Table';
 // } from '@chakra-ui/react';
 
 import ExpenseAPI from "../../API/ExpenseAPI";
-import { TableBody, TableHead } from "@material-ui/core";
+import AddExpenseButton from "../AddExpense_Component/AddExpenseButton";
+import '../../App.css'
 
 export default function ExpenseList() {
   // const [expenseAPI, setExpenseAPI] = useState([]);
   const queryClient = useQueryClient();
-  const {data} = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['expenses'],
     queryFn: () => ExpenseAPI.getExpense(),
   });
 
-  const {mutate, reset} = useMutation({
-    mutationFn: (expenseId) =>  ExpenseAPI.removeExpense(expenseId),
+  const { mutate, reset } = useMutation({
+    mutationFn: (expenseId) => ExpenseAPI.removeExpense(expenseId),
     onSuccess: () => {
       queryClient.invalidateQueries(['expenses', 'totalExpenses'])
     }
   })
 
   return (
-    <>
-      <h1>Expense section</h1>
+    <div>
+      <div className="AddExpenseButtonView">
+        <h1 className="ExpenseListTitle">Expenses</h1>
+        <AddExpenseButton />
+      </div>
 
-      {/* <div className="ExpenseList"> */}
-      {/* <Table size='lg' borderStyle='solid' borderColor='black'>
-          <TableHead>
-            <Tr>
-              <Th>Expense Amount</Th>
-              <Th>Description</Th>
-            </Tr>
-          </TableHead>
-          <TableBody>
-            {expenseAPI.map((data, index) => {
-              return (
-
-                <Tr>
-                  <Td>{data.expense_amount}</Td>
-                  <Td>{data.expense_description}</Td>
-                </Tr>
-                <p>{data.expense_amount}</p>
-                <p>{data.expense_description}</p>
-              )
-            })}
-          </TableBody>
-        </Table> */}
-      <Table striped bordered size='sm'>
+      <Table bordered size='md' width={100}>
         <thead>
-          <tr>
-            <th>#</th>
-            <th>Income</th>
-            <th>Description</th>
-            <th>Month</th>
+          <tr className="TableRow">
+            <th style={{ width: '5dvw' }}>Entry #</th>
+            <th style={{ width: '8dvw' }}>Date</th>
+            <th style={{ width: '8dvw' }}>Time</th>
+            <th style={{ width: '40dvw', textAlign: 'left' }}>Description</th>
+            <th>Amount</th>
+            <th>Delete Entry</th>
           </tr>
         </thead>
         <tbody>
-          {data.length == 0
-          ? <tr>
-              <td colSpan={4}>No Data!</td>
+          {(isPending || data == '')
+            ? <tr className="TableRow">
+              <td colSpan={5}>No Data!</td>
             </tr>
             :
             data?.map((expenseData, index) => {
-            return (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{expenseData.expense_amount}</td>
-                <td>{expenseData.expense_description}</td>
-                <td>{moment(expenseData.timestamp).format("D-M-Y h:m:sA")}</td>
-                <td>
-                  <Center>
-                    <Button colorScheme='red' size='sm' className='DeleteIncomeButton' onClick={() => {
-                      mutate(expenseData.id)
-                      reset();
+              return (
+                <tr key={index} className="TableRow">
+                  <td>{index + 1}</td>
+                  <td>
+                      {moment(expenseData.timestamp).format("D-MM-Y")}
+                  </td>
+                  <td>
+                      {moment(expenseData.timestamp).format("H:mm:s")}
+                  </td>
+                  <td style={{ textAlign: 'left' }}>{expenseData.expense_description == null ? 'No Description' : expenseData.expense_description}</td>
+                  <td>{new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: 'MYR'
+                  }).format(expenseData.expense_amount).replace('MYR', '')}</td>
+                  <td>
+                    <Center>
+                      <Button colorScheme='green' size='sm' className='DeleteIncomeButton' onClick={() => {
+                        mutate(expenseData.id)
+                        reset();
                       }}>Delete</Button>
-                  </Center>
-                </td>
-              </tr>
-            )
-          })}
+                    </Center>
+                  </td>
+                </tr>
+              )
+            })}
+          <tr className="TableAmountRow">
+            <td colSpan={4} style={{ textAlign: 'right' }}>Total</td>
+            <td style={{textAlign: 'center'}}>
+              {new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'MYR'
+              }).format(data?.map(expenseData => expenseData.expense_amount).reduce((prevValue, curValue) => prevValue + curValue, 0)).replace('MYR', '')}
+            </td>
+            <td />
+          </tr>
         </tbody>
       </Table>
-    </>
+    </div>
   )
 }

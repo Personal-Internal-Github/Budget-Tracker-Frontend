@@ -12,22 +12,8 @@ export default function HomePage() {
 
   return (
     <div id='mainView'>
-      <div>
-        <TotalBudgetBalance/>
-      </div>
-
-      <div className="AddButtonComponentView">
-        <AddIncomeButton />
-        <AddExpenseButton />
-      </div>
-
-      <div className="TotalComponentView">
-        <TotalIncome />
-        <TotalExpense />
-      </div>
-
-      <IncomeList />
-      <ExpenseList />
+        <IncomeList />
+        <ExpenseList />
     </div>
   )
 }
