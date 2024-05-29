@@ -68,7 +68,12 @@ export default function ExpenseList() {
           </tr>
         </thead>
         <tbody>
-          {data?.map((expenseData, index) => {
+          {data.length == 0
+          ? <tr>
+              <td colSpan={4}>No Data!</td>
+            </tr>
+            :
+            data?.map((expenseData, index) => {
             return (
               <tr key={index}>
                 <td>{index + 1}</td>

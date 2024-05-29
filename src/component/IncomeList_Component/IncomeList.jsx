@@ -67,6 +67,10 @@ export default function IncomeList() {
         <tbody>
           {(isFetching === true || isPending === true || fetchStatus === 'fetching') ? 
             <p>Loading ....</p>
+          : data.length == 0
+          ? <tr>
+              <td colSpan={3}>No Data!</td>
+            </tr>
           : data?.map((incomeData, index) => {
             return (
               <tr key={index}>

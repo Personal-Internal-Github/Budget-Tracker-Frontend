@@ -8,7 +8,7 @@ const IncomeAPI = {
     })
 
     const incomes = response.data
-    // console.log(incomes)
+    console.log(incomes)
     return incomes;
   },
 
@@ -16,7 +16,7 @@ const IncomeAPI = {
     const response = await axios.get('http://127.0.0.1:3000/income/getIncomeByMonth')
     // console.log(response);
 
-    const totalIncomeData = response.data.map(data => data.income).reduce((prevValue, curValue) => prevValue + curValue);
+    const totalIncomeData = response.data.map(data => data.income).reduce((prevValue, curValue) => prevValue + curValue, 0);
     // console.log(totalIncomeData);
     return totalIncomeData;
   },
