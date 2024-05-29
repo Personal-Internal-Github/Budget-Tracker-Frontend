@@ -8,7 +8,7 @@ import IncomeAPI from "../../API/IncomeAPI";
 import AddIncomeButton from "../Add_Income_Button/AddIncomeButton";
 
 export default function TotalIncome() {
-  const {data} = useQuery({
+  const { data } = useQuery({
     queryKey: ['totalIncomes'],
     queryFn: () => IncomeAPI.getIncomeByMonth()
   });
@@ -16,13 +16,13 @@ export default function TotalIncome() {
   return (
     <>
       <div className="TotalIncomeComponent">
-        <button onClick={() => setIsOpen(true)}>
-          <p>Total Income Balance:</p>
-          <p className="TotalIncomeText">{data}</p>
+        <p>Total Income Balance:</p>
+        <p className="TotalIncomeText">{data}</p>
+        {/* <button onClick={() => setIsOpen(true)}>
           <div className="AddIncomeIcon">
             <AddIcon />
           </div>
-        </button>
+        </button> */}
       </div>
     </>
   )

@@ -7,12 +7,12 @@ import './TotalIncomeBudget.css'
 
 export default function TotalBudgetBalance() {
   const totalIncomeData = useQuery({
-      queryKey: ['totalIncome'],
+      queryKey: ['totalIncomes'],
       queryFn: () => IncomeAPI.getIncomeByMonth()
     });
 
   const totalExpenseData = useQuery({
-      queryKey: ['totalExpense'],
+      queryKey: ['totalExpenses'],
       queryFn: () => ExpenseAPI.getExpenseByMonth()
     });
 

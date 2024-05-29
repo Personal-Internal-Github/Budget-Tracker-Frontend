@@ -15,13 +15,13 @@ export default function TotalExpense() {
   return (
     <>
       <div id='TotalExpense'>
-        <button onClick={() => setIsOpen(true)}>
           <p>Total Expense Balance:</p>
           <p className="TotalExpenseText">{data}</p>
+        {/* <button onClick={() => setIsOpen(true)}>
           <div className="AddExpenseIcon">
             <AddIcon />
           </div>
-        </button>
+        </button> */}
         {/* <p id='TotalExpenseValue'>
         {totalExpense}
       </p> */}
