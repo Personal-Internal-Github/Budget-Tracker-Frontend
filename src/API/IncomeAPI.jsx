@@ -2,26 +2,42 @@ import React from "react";
 import axios from "axios";
 
 const IncomeAPI = {
-  getIncome() {
-    return axios.get('http://127.0.0.1:3000/income/getIncome', {
+  async getIncome() {
+    const response = await axios.get('http://127.0.0.1:3000/income/getIncome', {
       headers: { "Access-Control-Allow-Origin": "*" }
-    }).then(res => { return res }).catch(err => err)
+    })
+
+    const incomes = response.data
+    // console.log(incomes)
+    return incomes;
   },
 
-  getIncomeByMonth(){
-    return axios.get('http://127.0.0.1:3000/income/getIncomeByMonth').then(res => { return res }).catch(err => err)
+  async getIncomeByMonth(){
+    const response = await axios.get('http://127.0.0.1:3000/income/getIncomeByMonth')
+    // console.log(response);
+
+    const totalIncomeData = response.data.map(data => data.income).reduce((prevValue, curValue) => prevValue + curValue);
+    // console.log(totalIncomeData);
+    return totalIncomeData;
   },
 
-  addIncome(incomeValue){
-    return axios.post('http://127.0.0.1:3000/income/addIncome',{
+  async addIncome(incomeValue){
+    const response = axios.post('http://127.0.0.1:3000/income/addIncome',{
       incomeValue: incomeValue
-    }).then(res => res).catch(err => err)
+    })
+
+    const addIncomeResponse = await response.data
+    return addIncomeResponse;
   },
 
-  deleteIncome(incomeId){
-    return axios.post('http://127.0.0.1:3000/income/removeIncome', {
+  async deleteIncome(incomeId){
+    const response = axios.post('http://127.0.0.1:3000/income/removeIncome', {
       incomeId: incomeId
-    }).then(res => res).catch(err => err)
+    });
+
+    const deleteIncomeResponse = await response.data
+    // console.log(deleteIncomeResponse)
+    return deleteIncomeResponse;
   }
 }
 

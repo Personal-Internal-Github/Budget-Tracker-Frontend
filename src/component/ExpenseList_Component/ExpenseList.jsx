@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import moment from 'moment';
+import { useQueryClient, useMutation, useQuery } from '@tanstack/react-query';
 import { Button, Center } from '@chakra-ui/react';
 import Table from 'react-bootstrap/Table';
 // import {
@@ -17,23 +18,19 @@ import ExpenseAPI from "../../API/ExpenseAPI";
 import { TableBody, TableHead } from "@material-ui/core";
 
 export default function ExpenseList() {
-  const [expenseAPI, setExpenseAPI] = useState([]);
+  // const [expenseAPI, setExpenseAPI] = useState([]);
+  const queryClient = useQueryClient();
+  const {data} = useQuery({
+    queryKey: ['expenses'],
+    queryFn: () => ExpenseAPI.getExpense(),
+  });
 
-  useEffect(() => {
-    const getExpense = () => {
-      ExpenseAPI.getExpense().then((res) => {
-        console.log(res.data.message)
-        setExpenseAPI(res.data.message);
-      })
+  const {mutate, reset} = useMutation({
+    mutationFn: (expenseId) =>  ExpenseAPI.removeExpense(expenseId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['expenses', 'totalExpenses'])
     }
-
-    getExpense();
-  }, []);
-
-  function deleteExpense(expenseId) {
-    ExpenseAPI.removeExpense(expenseId).then(res => { console.log(res.data) }).catch(err => { console.log(err) });
-    alert(res?.data?.response)
-  }
+  })
 
   return (
     <>
@@ -71,16 +68,19 @@ export default function ExpenseList() {
           </tr>
         </thead>
         <tbody>
-          {expenseAPI.map((data, index) => {
+          {data?.map((expenseData, index) => {
             return (
               <tr key={index}>
                 <td>{index + 1}</td>
-                <td>{data.expense_amount}</td>
-                <td>{data.expense_description}</td>
-                <td>{moment(data.timestamp).format("D-M-Y h:m:sA")}</td>
+                <td>{expenseData.expense_amount}</td>
+                <td>{expenseData.expense_description}</td>
+                <td>{moment(expenseData.timestamp).format("D-M-Y h:m:sA")}</td>
                 <td>
                   <Center>
-                    <Button colorScheme='red' size='sm' className='DeleteIncomeButton' onClick={() => deleteExpense(data.id)}>Delete</Button>
+                    <Button colorScheme='red' size='sm' className='DeleteIncomeButton' onClick={() => {
+                      mutate(expenseData.id)
+                      reset();
+                      }}>Delete</Button>
                   </Center>
                 </td>
               </tr>

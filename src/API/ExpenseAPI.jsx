@@ -1,25 +1,44 @@
 import axios from 'axios';
 
 const ExpenseAPI = {
-  getExpense(){
-    return axios.get('http://127.0.0.1:3000/expense/getExpense').then(res => res).catch(err => err);
+  async getExpense(){
+    const response = await axios.get('http://127.0.0.1:3000/expense/getExpense');
+
+    const incomes = response.data
+
+    // console.log(incomes)
+
+    return incomes;
   },
   
-  getExpenseByMonth(){
-    return axios.get('http://127.0.0.1:3000/expense/getExpenseByMonth').then(res => res).catch(err => err);
+  async getExpenseByMonth(){
+    const response = await axios.get('http://127.0.0.1:3000/expense/getExpenseByMonth');
+
+    const totalExpenseByCurrentMonth = await response.data.map(data => data.expense_amount).reduce((prevValue, curValue) => prevValue + curValue)
+    // console.log(totalExpenseByCurrentMonth);
+    return totalExpenseByCurrentMonth;
   },
 
-  addExpense(expenseAmount, expenseDescription){
-    return axios.post('http://127.0.0.1:3000/expense/addExpense', {
+  async addExpense(expenseAmount, expenseDescription){
+    const response = await axios.post('http://127.0.0.1:3000/expense/addExpense', {
       expenseAmount: expenseAmount,
       expenseDescription: expenseDescription
-    }).then(res => res).catch(err => err);
+    });
+
+    const addExpenseResponse = response.data;
+    // console.log(addExpenseResponse);
+    return addExpenseResponse;
   },
 
-  removeExpense(expenseId){
-    return axios.post('http://127.0.0.1:3000/expense/removeExpense', {
+  async removeExpense(expenseId){
+    const response = await axios.post('http://127.0.0.1:3000/expense/removeExpense', {
       expenseId: expenseId
-    }).then(res => res).catch(err => err);
+    });
+
+    const removeExpenseResponse = response.data
+
+    console.log(removeExpenseResponse);
+    return removeExpenseResponse;
   }
 }
 

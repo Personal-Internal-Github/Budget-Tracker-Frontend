@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -13,19 +14,16 @@ import {
 import IncomeAPI from '../../API/IncomeAPI';
 
 export default function AddIncomeButton() {
+  const queryClient = useQueryClient();
+
   const [isOpen, setIsOpen] = useState(false);
   const [incomeValue, setIncomeValue] = useState(0);
-
-  const addIncome = (incomeAmount) => {
-    IncomeAPI.addIncome(incomeAmount).then(res => {
-      console.log(res);
-      setIsOpen(false);
-    }).catch(err => err);
-  }
-
-  // useEffect(() => {
-  //   c
-  // });
+  const {data, mutate, reset} = useMutation({
+    mutationFn: (incomeAmount) => IncomeAPI.addIncome(incomeAmount),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['incomes', 'totalIncomes'])
+    }
+  })
 
   return (
     <div>
@@ -51,7 +49,11 @@ export default function AddIncomeButton() {
               <Button onClick={() => setIsOpen(false)}>
                 Cancel
               </Button>
-              <Button colorScheme='blue' onClick={() => addIncome(incomeValue)} ml={3}>
+              <Button colorScheme='blue' onClick={() => {
+                mutate(incomeValue);
+                reset();
+                setIsOpen(false);
+                }} ml={3}>
                 Add
               </Button>
             </AlertDialogFooter>

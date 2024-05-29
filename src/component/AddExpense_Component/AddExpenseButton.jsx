@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -18,19 +19,21 @@ import '../../App.css';
 
 export default function AddExpenseButton() {
   const [isOpen, setIsOpen] = useState(false);
-  const [expenseValue, setExpenseValue] = useState('');
+  const [expenseValue, setExpenseValue] = useState(0);
   const [expenseDescription, setExpenseDescription] = useState('');
+  const queryClient = useQueryClient();
 
-  const addExpense = (expenseValue, expenseDescription) => {
-    ExpenseAPI.addExpense(expenseValue, expenseDescription).then(res => {
-      console.log(res);
-      setIsOpen(false);
-    }).catch(err => err);
-  }
-
-  // useEffect(() => {
-  //   c
-  // });
+  const {mutate, reset} = useMutation({
+    mutationFn: ([expenseAmount, description]) => ExpenseAPI.addExpense(expenseAmount, description),
+    onMutate: () => {
+      queryClient.invalidateQueries({queryKey: ['expenses'], refetchType: 'all'})
+      queryClient.invalidateQueries({queryKey: ['totalExpenses'], refetchType: 'all'})
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['expenses'], refetchType: 'all'})
+      queryClient.invalidateQueries({queryKey: ['totalExpenses'], refetchType: 'all'})
+    }
+  })
 
   return (
     <div>
@@ -67,7 +70,11 @@ export default function AddExpenseButton() {
               <Button onClick={() => setIsOpen(false)}>
                 Cancel
               </Button>
-              <Button colorScheme='blue' onClick={() => addExpense(expenseValue, expenseDescription)} ml={3}>
+              <Button colorScheme='blue' onClick={() => {
+                mutate([expenseValue, expenseDescription])
+                reset();
+                setIsOpen(false);
+              }} ml={3}>
                 Add
               </Button>
             </AlertDialogFooter>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useQueryClient, useMutation, useQuery } from '@tanstack/react-query';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Center } from '@chakra-ui/react';
@@ -17,18 +18,18 @@ import Table from 'react-bootstrap/Table';
 import IncomeAPI from '../../API/IncomeAPI';
 
 export default function IncomeList() {
-  const [incomeAPI, setIncomeAPI] = useState([])
+  const queryClient = useQueryClient();
+  const {data, isFetching, isPending, fetchStatus} = useQuery({
+    queryKey: ['incomes'],
+    queryFn: () => IncomeAPI.getIncome()
+  });
 
-  useEffect(() => {
-    const getIncome = () => {
-      IncomeAPI.getIncome().then(res => {
-        console.log(res.data.length);
-        setIncomeAPI(res.data)
-      })
+  const {mutate, reset} = useMutation({
+    mutationFn: (incomeId) => IncomeAPI.deleteIncome(incomeId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['incomes', 'totalIncomes'])
     }
-
-    getIncome();
-  }, [incomeAPI.length]);
+  })
 
   return (
     <div>
@@ -63,15 +64,20 @@ export default function IncomeList() {
           </tr>
         </thead>
         <tbody>
-          {incomeAPI.map((data, index) => {
+          {(isFetching === true || isPending === true || fetchStatus === 'fetching') ? 
+            <p>Loading ....</p>
+          : data?.map((incomeData, index) => {
             return (
               <tr key={index}>
                 <td>{index + 1}</td>
-                <td>{data.income}</td>
-                <td>{moment(data.timestamp).format("D-M-Y h:m:sA")}</td>
+                <td>{incomeData.income}</td>
+                <td>{moment(incomeData.timestamp).format("D-M-Y h:m:sA")}</td>
                 <td>
                   <Center>
-                    <Button colorScheme='red' size='sm' className='DeleteIncomeButton'>Delete</Button>
+                    <Button colorScheme='red' size='sm' className='DeleteIncomeButton' onClick={() => {
+                      mutate(incomeData.id)
+                      reset();
+                      }}>Delete</Button>
                   </Center>
                 </td>
               </tr>
