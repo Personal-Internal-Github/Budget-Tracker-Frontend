@@ -27,7 +27,8 @@ export default function IncomeList() {
   const {mutate, reset} = useMutation({
     mutationFn: (incomeId) => IncomeAPI.deleteIncome(incomeId),
     onSuccess: () => {
-      queryClient.invalidateQueries(['incomes', 'totalIncomes'])
+      queryClient.invalidateQueries(['incomes'])
+      queryClient.invalidateQueries(['totalIncomes'])
     }
   })
 
