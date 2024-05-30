@@ -1,9 +1,12 @@
 import React from "react";
 import axios from "axios";
+import config from '../config/config.js';
+
+const url = config;
 
 const IncomeAPI = {
   async getIncome() {
-    const response = await axios.get('http://127.0.0.1:3000/income/getIncome', {
+    const response = await axios.get(url + '/income/getIncome', {
       headers: { "Access-Control-Allow-Origin": "*" }
     })
 
@@ -13,7 +16,7 @@ const IncomeAPI = {
   },
 
   async getIncomeByMonth(){
-    const response = await axios.get('http://127.0.0.1:3000/income/getIncomeByMonth')
+    const response = await axios.get(url + '/income/getIncomeByMonth')
     // console.log(response);
 
     const totalIncomeData = response?.data?.map(data => data.income)?.reduce((prevValue, curValue) => prevValue + curValue, 0);
@@ -22,7 +25,7 @@ const IncomeAPI = {
   },
 
   async addIncome(incomeValue, incomeDescription){
-    const response = axios.post('http://127.0.0.1:3000/income/addIncome',{
+    const response = axios.post(url + '/income/addIncome',{
       incomeValue: incomeValue,
       incomeDescription: incomeDescription
     })
@@ -32,7 +35,7 @@ const IncomeAPI = {
   },
 
   async deleteIncome(incomeId){
-    const response = axios.post('http://127.0.0.1:3000/income/removeIncome', {
+    const response = axios.post(url + '/income/removeIncome', {
       incomeId: incomeId
     });
 

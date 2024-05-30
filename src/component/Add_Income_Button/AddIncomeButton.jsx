@@ -48,7 +48,7 @@ export default function AddIncomeButton() {
 
             <AlertDialogBody>
               <InputGroup>
-                <InputLeftAddon>Income Amount</InputLeftAddon>
+                <InputLeftAddon width={'11.1dvw'}>Income Amount</InputLeftAddon>
                 <Input type='number' onChange={(e) => setIncomeValue(e.target.value)} value={incomeValue} placeholder='Please enter your income amount' required />
               </InputGroup>
             </AlertDialogBody>
@@ -56,7 +56,7 @@ export default function AddIncomeButton() {
             <AlertDialogBody>
               <InputGroup>
                 <InputLeftAddon>Income Description</InputLeftAddon>
-                <Input type='text' onChange={(e) => setIncomeDescription(e.target.value)} value={incomeDescription} placeholder='Please enter your income amount' required />
+                <Input type='text' onChange={(e) => setIncomeDescription(e.target.value)} value={incomeDescription} placeholder='Enter description here' required />
               </InputGroup>
             </AlertDialogBody>
 

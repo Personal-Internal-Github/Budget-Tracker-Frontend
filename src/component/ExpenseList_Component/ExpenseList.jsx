@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import moment from 'moment';
 import { useQueryClient, useMutation, useQuery } from '@tanstack/react-query';
 import { Button, Center } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
 import Table from 'react-bootstrap/Table';
-import { NumericFormat } from 'react-number-format';
 // import {
 //   TableContainer,
 //   Table,
@@ -53,9 +53,9 @@ export default function ExpenseList() {
           </tr>
         </thead>
         <tbody>
-          {(isPending || data == '')
+          {(isPending || data == '' || data == NaN)
             ? <tr className="TableRow">
-              <td colSpan={5}>No Data!</td>
+              <td colSpan={6}>No Data!</td>
             </tr>
             :
             data?.map((expenseData, index) => {
@@ -75,10 +75,14 @@ export default function ExpenseList() {
                   }).format(expenseData.expense_amount).replace('MYR', '')}</td>
                   <td>
                     <Center>
-                      <Button colorScheme='green' size='sm' className='DeleteIncomeButton' onClick={() => {
+                      <DeleteIcon onClick={() => {
                         mutate(expenseData.id)
                         reset();
-                      }}>Delete</Button>
+                      }}/>
+                      {/* <Button colorScheme='green' size='sm' className='DeleteIncomeButton' onClick={() => {
+                        mutate(expenseData.id)
+                        reset();
+                      }}>Delete</Button> */}
                     </Center>
                   </td>
                 </tr>

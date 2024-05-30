@@ -58,10 +58,10 @@ export default function AddExpenseButton() {
                 {/* <Input variant='outlined' type='number' onChange={(e) => setExpenseValue(e.target.value)} value={expenseValue} placeholder='Please enter your expense amount' required/> */}
                 <Input variant='outlined' type='number' onChange={(e) => setExpenseValue(e.target.value)} value={expenseValue} required />
               </InputGroup>
-
-              <InputGroup>
+            
+              <InputGroup margin={'1rem 0 0 0'} >
                 <InputLeftAddon width={152}>Description</InputLeftAddon>
-                <Input variant='outlined' type='text' onChange={(e) => setExpenseDescription(e.target.value)} value={expenseDescription} />
+                <Input variant='outlined' type='text' onChange={(e) => setExpenseDescription(e.target.value)} value={expenseDescription} placeholder='Enter description here'/>
               </InputGroup>
               {/* <Input variant='outlined' type='text' onChange={(e) => setExpenseDescription(e.target.value)} value={expenseDescription} placeholder='Please enter your expense description' /> */}
             </AlertDialogBody>
