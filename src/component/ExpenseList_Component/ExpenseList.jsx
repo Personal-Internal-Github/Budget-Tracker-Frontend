@@ -30,7 +30,8 @@ export default function ExpenseList() {
   const { mutate, reset } = useMutation({
     mutationFn: (expenseId) => ExpenseAPI.removeExpense(expenseId),
     onSuccess: () => {
-      queryClient.invalidateQueries(['expenses', 'totalExpenses'])
+      queryClient.invalidateQueries(['expenses'])
+      queryClient.invalidateQueries(['totalExpenses'])
     }
   })
 
@@ -78,7 +79,7 @@ export default function ExpenseList() {
                       <DeleteIcon onClick={() => {
                         mutate(expenseData.id)
                         reset();
-                      }}/>
+                      }} className='DeleteIcon'/>
                       {/* <Button colorScheme='green' size='sm' className='DeleteIncomeButton' onClick={() => {
                         mutate(expenseData.id)
                         reset();

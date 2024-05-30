@@ -51,3 +51,7 @@ Input{
   border: 0px solid transparent;
   font-weight: bold;
 }
+
+.DeleteIcon:hover{
+  cursor: pointer;
+}
